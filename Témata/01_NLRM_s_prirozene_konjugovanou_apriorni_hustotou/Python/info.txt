@@ -1,0 +1,2 @@
+Balíček scriptů pro Bayesiánskou analýzu
+	 - důležité věci ke stažení: python, scipy, numpy, pandas -> vyzkoušet co vše je už v základní výbavě pythonu popř. jaké problémy můžou nastat během prvních spuštění
