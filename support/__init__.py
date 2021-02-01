@@ -1,0 +1,1 @@
+print("Pomocné funkce načteny.")
