@@ -49,8 +49,8 @@ h_0 = 1 / 0.5**2
 nu_0 = 5
 
 # ===== 3. Metropolis within Gibbs - nastaveni =====
-s = 5_000 + 1
-s_0 = 3_000 + 1
+s = 50_000 + 1
+s_0 = 30_000 + 1
 s_1 = s - s_0
 
 # Ukladani vzorku
