@@ -18,7 +18,9 @@ Aby byly skripty funkční, je třeba nastavit cestu v terminálu do složky jed
 
 Standardní:
 - `math`
+- `pdb`
 - `sys`
+- `warnings`
 
 Rozšířené:
 - `matplotlib`
@@ -45,5 +47,5 @@ Pomocné funkce převzaté od doc. Daniela Němce a uloženy v knihovně support
 - Poznámka 1: V Pythonu může dojít k problému, pokud se budete snažit vypočítat mocninu negativního čísla na reálné číslo, tak díky přednosti mocniny před "znaménkem" čísla můžete získat hodnotu "nan" (toto se děje při umocňování matic). Tento typ se dá kontrolovat pomocí funkce numpy.isnan().
 - Poznámka 2: Práce s maticemi je v Pythonu mírně odlišná oproti jazyku R, nebo Matlabu. Hlavní rozdíl je v tom, že knihovna NumPy obsahuje třídu array, která se používá pro maticové operace, ačkoliv obsahuje i třídu matrix. Doporučuje se používat pouze třídu array, protože podporuje stejné operace jako třída matrix, avšak většina funkcí knihovny NumPy vrací objekty třídy array.
 - Poznámka 3: Operace s maticemi v Pythonu jsou více náchylné na chyby, protože je zde více věcí, které je třeba mít na paměti. Krátký úvod do práce s matice v Pythonu je obsahem scriptu [matrix_crashcourse.py](https://github.com/JanMelicharik/baan_python/blob/master/00_intro/matrix_crashcourse.py), který čerpá z podrobnějšího popisu ze stránky [O'Reilly](https://www.oreilly.com/library/view/machine-learning-with/9781491989371/ch01.html).
-
+- Poznámka 4: NumPy používá tzv. **broadcasting** kdyz pracuje s maticemi (`numpy.array()`), které nejsou stejného rozměru. V případě adresování jednotlivých částí matice (sloupce, řádky) je tak jištější adresovat sloupec/řádek jeho indexem v hranatých závorkách; např. (`my_matrix[:,[2]]`). [Více informací o broadcastingu](https://numpy.org/devdocs/user/theory.broadcasting.html).
 

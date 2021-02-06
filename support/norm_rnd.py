@@ -1,6 +1,4 @@
 from scipy.linalg import cholesky as chol
-from numpy import shape
-from numpy import transpose as t
 from numpy.random import normal as randn
 
 '''
@@ -12,11 +10,5 @@ Vystupem je nahodny vektor vyberu z normalniho rozlozeni
 
 def norm_rnd(sigma):
     h = chol(sigma)
-    size = shape(sigma)
-    rv = randn(size = (size[0],1))
-    y = t(h) @ rv
-
-    return y
-
-
-
+    rv = randn(size=(sigma.shape[0], 1))
+    return  h.T @ rv

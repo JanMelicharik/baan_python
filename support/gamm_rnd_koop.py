@@ -6,7 +6,7 @@
 
 from numpy.random import gamma
 
-def gamm_rnd_koop(mean, degrees_of_freedom, size):
+def gamm_rnd_koop(mean, degrees_of_freedom):
     """
         mean ................. h_1 (posteriorni odhad presnostni)
         degrees_of_freedom ... nu_1
@@ -15,4 +15,4 @@ def gamm_rnd_koop(mean, degrees_of_freedom, size):
     shape = degrees_of_freedom / 2
     # scale = degrees_of_freedom / (2 * mean)       # not sure about this setup
     scale = 2 * mean / degrees_of_freedom           # pro prvni cviceni vyhovuje tento
-    return gamma(shape=shape, scale=scale, size=size)
+    return gamma(shape=shape, scale=scale)

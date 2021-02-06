@@ -91,15 +91,9 @@ same = (my_new_matrix_2.T == my_new_matrix_1).all()
 empty_matrix = np.zeros([4,4])
 empty_matrix[0,0] = 5           # Prvek v prvnim radku a prvnim sloupci nahradi cislem 5
 # Vkladani radku do matice
-# Nasledujici radky produkuji stejny vysledek
-empty_matrix[2,:] = [2,4,2,5]               # do radku matice vlozi list
-empty_matrix[2,:] = (2,4,2,5)               # do radku matice vlozi tuple
-empty_matrix[2,:] = np.array([2,4,2,5])     # do radku matice vlozi vektor
-empty_matrix[2,:] = np.array([[2,4,2,5]])   # do radku matice vlozi maticovy vektor (matici 1x4) - nezalezi na orientaci
-
+empty_matrix[[2],:] = np.array([[2,4,2,5]])   # do radku matice vlozi maticovy vektor (matici 1x4) - nezalezi na orientaci
 # Vkladani sloupce do matice
-# Analogicky postup jako u vkladani radku
-empty_matrix[:,2] = np.array([11,21,9,-12])
+empty_matrix[:,[2]] = np.array([[11],[21],[9],[-12]])
 
 # Rozsirovani matic
 # Tato operace ka matici muze priradit jakoukoliv matici, ktera splnuje shodu v rozmeru radku/sloupce.
