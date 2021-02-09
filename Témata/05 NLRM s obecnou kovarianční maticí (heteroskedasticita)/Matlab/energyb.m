@@ -47,7 +47,7 @@ p = size(z,2);
 beta = zeros(k,S);
 h = zeros(1,S);
 alpha_rw = zeros(p,S);
-count_rw = 0; %èítaè akcepotvaných kandidátù
+count_rw = 0; %ï¿½ï¿½taï¿½ akcepotvanï¿½ch kandidï¿½tï¿½
 
 %po prvnich 50000 replikacich se vzal vysledny vektor rozptylu (a kovarianci) jako zaklad
 %kovariancni matice; po te se dale ladi "d" pro ziskani zadouci
@@ -108,8 +108,9 @@ for s=2:S
 
 %R-W M-H pro alpha
     a_can_rw = alpha_rw(:,s-1) + norm_rnd(vscale_rw); %kandidat
-    log_accept_rw = min(a_post(a_can_rw,beta(:,s),h(:,s),y,X,z)...
-        -a_post(alpha_rw(:,s-1),beta(:,s),h(:,s),y,X,z),0);
+    log_accept_rw = min(
+        a_post(a_can_rw,beta(:,s),h(:,s),y,X,z)-a_post(alpha_rw(:,s-1),beta(:,s),h(:,s),y,X,z),
+        0);
     if log_accept_rw > log(rand)
         alpha_rw(:,s)=a_can_rw;
         count_rw=count_rw+1;
