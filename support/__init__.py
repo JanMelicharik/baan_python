@@ -1,1 +1,1 @@
-print("Pomocné funkce načteny.")
+print("Pomocne funkce nacteny.")
