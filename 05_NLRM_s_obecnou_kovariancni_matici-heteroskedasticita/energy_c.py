@@ -6,6 +6,7 @@ from support.geweke import geweke
 from support.norm_rnd import norm_rnd
 from support.gamm_rnd_koop2 import gamm_rnd_koop2
 from support.a_post import a_post
+from support.nu_lambda_post import nu_lambda_post
 
 import pandas as pd
 import numpy as np
@@ -98,65 +99,57 @@ for i in range(1, s):
     h[:, [i]] = gamm_rnd_koop2(h_1, nu_1)
 
     epsilon = y - x @ beta[:, [i]]
+    nu_lam_1 = nu_lam_rw[:][i - 1] + 1
     for j in range(n):
-        nu_lam_1 = nu_lam_rw[:, [i - 1]] + 1
-        lam_1 = nu_lam_1 / (h[0][i] * epsilon[j] ** 2 + nu_lam_1 - 1)
+        lam_1 = nu_lam_1 / (h[0][i] * epsilon[j][0] ** 2 + nu_lam_1 - 1)
+        # pdb.set_trace()
         # Pouziva jiny typ funkce pro generovani cisel z gamma rozdeleni nez v Matlab scriptu
-        lam[j,[i]] = gamm_rnd_koop2(lam_1, nu_lam_1)
+        lam[j,i] = gamm_rnd_koop2(lam_1, nu_lam_1)
 
-    nu_lam_can_rw = nu_lam_rw[:, [i-1]] + norm_rnd(vscale_rw)
-
-
-
-    ##### ODTUD POKRACOVAT!
-
-
-
-
+    # R-W M-H pro nu_lambda
+    nu_lam_can_rw = nu_lam_rw[0][i-1] + norm_rnd(vscale_rw)
+    pdb.set_trace()
     log_accept_rw = min(
-        a_post(
-            a_can_rw,
-            beta[:, [i]],
-            h[0][i],
-            y,
-            x,
-            z
-        ) - a_post(
-            alpha_rw[:, [i - 1]],
-            beta[:, [i]],
-            h[0][i],
-            y,
-            x,
-            z
+        nu_lambda_post(
+            nu_lam_can_rw,
+            nu_lam_0,
+            lam[:, [i]]
+        ) - nu_lambda_post(
+            nu_lam_rw[0][i - 1], 
+            nu_lam_0,
+            lam[:, [i]]
         ),
         0
     )
 
     if log_accept_rw > math.log(np.random.uniform()):
-        alpha_rw[:, [i]] = a_can_rw
+        nu_lam_rw[:, [i]] = nu_lam_can_rw
         count_rw += 1
     else:
-        alpha_rw[:, [i]] = alpha_rw[:, [i - 1]]
+        nu_lam_rw[:, [i]] = nu_lam_rw[:, [i - 1]]
 
     progress_bar(i, s)
 
-# ===== 4. Vyhozeni prvnich s_0 vzorku =====
+# Vyhozeni prvnich s_0 vzorku
 beta = beta[:, s_0:]
 h = h[:, s_0:]
-alpha_rw = alpha_rw[:, s_0:]
+nu_lam_rw = nu_lam_rw[:, s_0:]
+lam = lam[:, s_0:]
 
-# Matice theta obsahuje parametry beta, h a alpha
-theta = np.c_[beta.T, h.T, alpha_rw.T]
-means = np.mean(theta, axis=0)
-stds = np.std(theta, axis=0)
+# ===== 4. Vypocet posteriornich charakteristik =====
+# Matice theta obsahuje parametry beta, h a alpha - neni treba pocitat zvlast (jako v Matlab scriptu)
+ksi = np.c_[beta.T, h.T, nu_lam_rw.T, lam.T]
+means = np.mean(ksi, axis=0)      # Posteriorni stredni hodnoty
+stds = np.std(ksi, axis=0)        # Posteriorni rozptyl
 
 accept_ratio_rw = count_rw / s
 
 # ===== 5. Konvergencni diagnostiky (Geweke) =====
+theta = np.c_[beta.T, h.T, nu_lam_rw.T]
 res_converg = geweke(theta)
 
 # HPDI pro beta a dalsi parametry
-hpdi = np.quantile(theta, (0.05, 0.95), axis=0)
+hpdi = np.quantile(ksi, (0.05, 0.95), axis=0)
 
 # ===== 7. Prezentace vysledku =====
 headers = ["", "Prior", "Posterior", "NSE", "Geweke CD", "95% HPDI"]
@@ -191,23 +184,23 @@ print(
     f"\nChyb: {error_check}"
 )
 
-fix, ax = plt.subplots(ncols=4, nrows=2, figsize=(12,8))
-ax[0,0].set_title("beta_1")
-ax[0,0].hist(theta[:, 0], bins=30, histtype="bar", rwidth=0.9)
-ax[0,1].set_title("beta_2")
-ax[0,1].hist(theta[:, 1], bins=30, histtype="bar", rwidth=0.9)
-ax[0,2].set_title("beta_3")
-ax[0,2].hist(theta[:, 2], bins=30, histtype="bar", rwidth=0.9)
-ax[0,3].set_title("beta_4")
-ax[0,3].hist(theta[:, 3], bins=30, histtype="bar", rwidth=0.9)
-ax[1,0].set_title("alpha_1")
-ax[1,0].hist(theta[:, 5], bins=30, histtype="bar", rwidth=0.9)
-ax[1,1].set_title("alpha_2")
-ax[1,1].hist(theta[:, 6], bins=30, histtype="bar", rwidth=0.9)
-ax[1,2].set_title("alpha_3")
-ax[1,2].hist(theta[:, 7], bins=30, histtype="bar", rwidth=0.9)
-ax[1,3].set_title("h")
-ax[1,3].hist(theta[:, 4], bins=30, histtype="bar", rwidth=0.9)
+# fix, ax = plt.subplots(ncols=4, nrows=2, figsize=(12,8))
+# ax[0,0].set_title("beta_1")
+# ax[0,0].hist(theta[:, 0], bins=30, histtype="bar", rwidth=0.9)
+# ax[0,1].set_title("beta_2")
+# ax[0,1].hist(theta[:, 1], bins=30, histtype="bar", rwidth=0.9)
+# ax[0,2].set_title("beta_3")
+# ax[0,2].hist(theta[:, 2], bins=30, histtype="bar", rwidth=0.9)
+# ax[0,3].set_title("beta_4")
+# ax[0,3].hist(theta[:, 3], bins=30, histtype="bar", rwidth=0.9)
+# ax[1,0].set_title("alpha_1")
+# ax[1,0].hist(theta[:, 5], bins=30, histtype="bar", rwidth=0.9)
+# ax[1,1].set_title("alpha_2")
+# ax[1,1].hist(theta[:, 6], bins=30, histtype="bar", rwidth=0.9)
+# ax[1,2].set_title("alpha_3")
+# ax[1,2].hist(theta[:, 7], bins=30, histtype="bar", rwidth=0.9)
+# ax[1,3].set_title("h")
+# ax[1,3].hist(theta[:, 4], bins=30, histtype="bar", rwidth=0.9)
 
 
 plt.show()

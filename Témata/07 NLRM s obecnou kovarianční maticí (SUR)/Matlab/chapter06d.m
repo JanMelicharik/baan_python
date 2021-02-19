@@ -53,7 +53,7 @@ end
 
 %% Apriorni hyperparametry a nastaveni Gibbsova vzorkovace
 
-S0 = 15000+1; %poèáteèní podminka
+S0 = 15000+1; %poï¿½ï¿½teï¿½nï¿½ podminka
 S1 = 15000;
 S = S0+S1;
 
@@ -77,6 +77,10 @@ H(:,:,1) = H_0;
  pom_step = 0.05; %0.05 = posun po 5% 
  pom_graph = pom_step;
  
+
+
+
+ 
 for s=2:S
  sumV1 = zeros(k,k);
  sumb1 = zeros(k,1);
@@ -94,13 +98,20 @@ beta_1 = V_1\(V_0\beta_0+sumb1); %inverze pomoci deleni zleva "\" ... Koop 6.51
 %podminena hustota pro H
  sumH = zeros(M,M);
  for ii=1:N
-   sumH = sumH+ (y(M*ii-1:M*ii,1)-X(M*ii-1:M*ii,:)*beta(:,s))*(y(M*ii-1:M*ii,1)-X(M*ii-1:M*ii,:)*beta(:,s))'; %cast sumy v Koop 6.54
+   sumH = sumH+ 
+   (y(M*ii-1:M*ii,1)-X(M*ii-1:M*ii,:)*beta(:,s))
+   *
+   (y(M*ii-1:M*ii,1)-X(M*ii-1:M*ii,:)*beta(:,s))'; %cast sumy v Koop 6.54
  end
  nu_1 = N+nu_0; %Koop 6.52
  H_1 = inv(invH_0+sumH); %Koop 6.54
 
 %podminena hustota pro H
  H(:,:,s) = wish_rnd(H_1,nu_1); %Koop 6.49
+
+
+
+
 
 %graficke zobrazeni prubehu po 5 %
  if s/S>=pom_graph    

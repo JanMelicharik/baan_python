@@ -25,6 +25,9 @@ from numpy import diag,\
                   ones,\
                   zeros
 
+##### POZNAMKY:
+# Predelat nacitani .mat souboru na CSV 
+
 
 # Nacteni dat:
 # time   ... cas cesty

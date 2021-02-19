@@ -4,17 +4,8 @@
 #  S ....... velikost bootstrapoveho vyberu
 #  w ....... bootstrapove vahy (optional)
 
-# Nastaveni cesty do domovske slozky
-import sys
-root_dir = "/".join(sys.argv[0].split("/")[:-3])
-sys.path.insert(1, root_dir + "/Support/Python")
-
-# importy pomocnych funkci
-from progress_info import progress_bar
-
-# importy oficialnich knihoven
+from support.progress_info import progress_bar
 import numpy as np
-
 
 def my_boot(y: np.ndarray, s: int, w=None):
     n = y.size

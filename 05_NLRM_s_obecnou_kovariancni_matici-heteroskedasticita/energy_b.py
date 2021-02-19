@@ -154,7 +154,7 @@ beta = beta[:, s_0:]
 h = h[:, s_0:]
 alpha_rw = alpha_rw[:, s_0:]
 
-# Matice theta obsahuje parametry beta, h a alpha
+# Matice theta obsahuje parametry beta, h a alpha - neni treba pocitat zvlast (jako v Matlab scriptu)
 theta = np.c_[beta.T, h.T, alpha_rw.T]
 means = np.mean(theta, axis=0)
 stds = np.std(theta, axis=0)
