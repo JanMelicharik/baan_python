@@ -96,7 +96,7 @@ empty_matrix[[2],:] = np.array([[2,4,2,5]])   # do radku matice vlozi maticovy v
 empty_matrix[:,[2]] = np.array([[11],[21],[9],[-12]])
 
 # Rozsirovani matic
-# Tato operace ka matici muze priradit jakoukoliv matici, ktera splnuje shodu v rozmeru radku/sloupce.
+# Tato operace k matici muze priradit jakoukoliv matici, ktera splnuje shodu v rozmeru radku/sloupce.
 # Pozor: Abychom matici rozsirili, je treba k ni pridavat radky/sloupce v maticovem zapisu - nelze do matice pridat vektor.
 # Pozor: Zalezi na orientaci pridavaneho radku/sloupce - nelze pridat sloupec jako radek
 # Pridani radku do matice
