@@ -117,8 +117,8 @@ fit a simple model for the total cost of production:
 
 ln cost_it = b1 + b2 ln output_it + b3 ln fuel-price_it + b4 load-factor_it + eps_it .
 
-Output is measured in “revenue passenger miles.” The load factor is a rate of capacity
-utilization; it is the average rate at which seats on the airline’s planes are filled. More complete
+Output is measured in ï¿½revenue passenger miles.ï¿½ The load factor is a rate of capacity
+utilization; it is the average rate at which seats on the airlineï¿½s planes are filled. More complete
 models of costs include other factor prices (materials, capital) and, perhaps, a quadratic term
 in log output to allow for variable economies of scale.
 %}
@@ -280,7 +280,10 @@ for s=2:S
    beta(:,s)=beta_1+norm_rnd(V_1);  %podminena hustota pro beta
    pom = 0;
    for j=1:N
-      pom = pom+(y_i(:,j)-beta(j,s)*ones(T,1)-X_i_til(:,:,j)*beta(N+1:N+(k-1),s))'*(y_i(:,j)-beta(j,s)*ones(T,1)-X_i_til(:,:,j)*beta(N+1:N+(k-1),s));
+      pom = pom+
+      (y_i(:,j) - beta(j,s) * ones(T,1) - X_i_til(:,:,j) * beta(N+1:N+(k-1),s))'
+      *
+      (y_i(:,j) - beta(j,s) * ones(T,1) - X_i_til(:,:,j) * beta(N+1:N+(k-1),s));
    end
    h_1 = (1/nu_1*(pom+nu_0*1/h_0))^-1;
    h(:,s)=gamm_rnd_Koop(h_1,nu_1,1); %podminena hustota pro h
@@ -402,7 +405,11 @@ beta(:,s)=beta_1+norm_rnd(V_1); %podminena hustota pro beta
 
    pom = 0;
    for j=1:N
-      pom = pom+(y_i(:,j)-alpha(j,s-1)*ones(T,1)-X_i_til(:,:,j)*beta(:,s))'*(y_i(:,j)-alpha(j,s-1)*ones(T,1)-X_i_til(:,:,j)*beta(:,s));
+      pom = pom+(
+         y_i(:,j)-alpha(j,s-1)*ones(T,1)-X_i_til(:,:,j)*beta(:,s)
+      )'*(
+         y_i(:,j)-alpha(j,s-1)*ones(T,1)-X_i_til(:,:,j)*beta(:,s)
+      );
    end
    h_1 = (1/nu_1*(pom+nu_0*1/h_0))^(-1);
 h(:,s)=gamm_rnd_Koop(h_1,nu_1,1); %podminena hustota pro h
@@ -519,7 +526,7 @@ h = zeros(1,S);
 V_beta = zeros(k,k,S);
 mu_beta = zeros(k,S);
 
-%% Gibbsùv vzorkovaè
+%% Gibbsï¿½v vzorkovaï¿½
 h(1) = h_0;
 V_beta(:,:,1) = V_beta_0;
 mu_beta(:,1) = mu_beta_0;
@@ -560,7 +567,11 @@ V_beta(:,:,i) = inv(wish_rnd(inv(nu_beta_1*V_beta_1),nu_beta_1));
 %podminena hustota pro h
    pom = 0;
    for j=1:N
-      pom = pom+(y_i(:,j)-X_i(:,:,j)*beta(:,i,j))'*(y_i(:,j)-X_i(:,:,j)*beta(:,i,j));
+      pom = pom+(
+         y_i(:,j)-X_i(:,:,j)*beta(:,i,j)
+      )'*(
+         y_i(:,j)-X_i(:,:,j)*beta(:,i,j)
+         );
    end
    h_1 = (1/nu_1*(pom+nu_0*1/h_0))^-1;
    h(:,i)=gamm_rnd_Koop(h_1,nu_1,1); %podminena hustota pro h

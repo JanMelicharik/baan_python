@@ -112,4 +112,4 @@ more_cols_2 = np.c_[matrix_ones_2, [[3],[3],[3],[3]]]
 
 
 # Pozastavi beh programu a umozni manipulaci a zobrazeni existujicich promennych
-pdb.set_trace()     # Pro ukonceni programu staci do konzole "continue"
+pdb.set_trace()     # Pro ukonceni programu staci do konzole napsat "continue" (popr. "c" nebo "q")

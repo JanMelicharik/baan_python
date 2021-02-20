@@ -6,6 +6,7 @@ from math import exp
 from math import log
 from math import pi
 from math import sqrt
+from numpy import array
 from numpy import diag
 from numpy import eye
 from numpy import mean
